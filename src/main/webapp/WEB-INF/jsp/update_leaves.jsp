@@ -14,10 +14,9 @@
         <title>JSP Page</title>
     </head>
      <body>
-      <c:set var="leaveInfo" value="${leave}"/>
+      <c:set var="leaveInfo" value="${leaveInfo}"/>
 	<div align="center">
 		<h2>Update Leave</h2>
-                <p>${leaveInfo}</p>
 		<form:form modelAttribute="leaveInfo" method="post">
                     <input type="hidden" value="${leaveInfo.id}" name="id"/>
 			<table class="login">
@@ -39,7 +38,7 @@
 					<td><form:select path="year">
                                             <c:forEach begin="0" end="10" var="val">
                                                 <c:set var="yr" value="${2020+val}"/>
-                                                <option value="${yr}"${yr == year ? 'selected="selected"' : ''}>${yr}</option>
+                                                <option value="${yr}"${yr == leaveInfo.year ? 'selected="selected"' : ''}>${yr}</option>
                                             </c:forEach>
                                         </form:select></td>
 				</tr>        

@@ -165,7 +165,6 @@ public class AdminController {
             LeaveInfo leave = leaveDao.getLeaveInfoById(leave_id);
             List<User> employeeList = userDao.getAllEmployees();
             model.addAttribute("leaveInfo", leave);
-            System.out.println(leave.getUser().getFirst_name());
             return  new ModelAndView("update_leaves","employeeList",employeeList);
     }
     
