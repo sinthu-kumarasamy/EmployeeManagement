@@ -138,4 +138,30 @@ public class TasksDao extends BaseDao {
 		}
             
         }
+        
+        public Tasks getTaskById(int task_id) throws HibernateException {
+		try {
+			begin();
+			Query query = getSession().createQuery("from Tasks where id=:task_id");
+			query.setParameter("task_id", task_id);
+                        Tasks task = (Tasks)query.uniqueResult();
+			commit();
+			return task;
+		} catch (HibernateException e) {
+			rollback();
+			throw new HibernateException("Unable to fetch all tasks", e);
+		}
+	}
+        
+        public void updateTaskDetails(Tasks taskData) {
+            try {
+                    begin();
+                    getSession().update(taskData);
+                    commit();
+            } catch (HibernateException e) {
+                    rollback();
+                    throw new HibernateException("Unable to update the task " + e.getMessage());
+            }
+        }
+        
 }

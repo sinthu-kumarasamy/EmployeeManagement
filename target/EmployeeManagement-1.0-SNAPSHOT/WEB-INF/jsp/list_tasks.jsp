@@ -49,6 +49,9 @@
            <c:if test="${addedTask}">
                         <p style="color:green">Added New Task Successfully</p>
                     </c:if>
+                      <c:if test="${updatedTask}">
+                        <p style="color:green">Updated Task Successfully</p>
+                    </c:if>
                         <a class="btn btn-primary" href="${contextPath}/add_tasks.htm">Add New Task</a><br>
 		<table class="login" border="3">
 			<tr>
@@ -61,7 +64,8 @@
 				<th>Update Task</th>
 			</tr>
 			<c:forEach items="${tasklist}" var="task">
-                            <form>
+                            <form action="${contextPath}/manager/updateTasks.htm">
+                                <input type="hidden" name="id" value="${task.id}"/>
 					<tr>
 						<td>${task.taskDesc}</td>
 						<td>${task.credits}</td>

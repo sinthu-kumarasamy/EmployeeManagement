@@ -159,7 +159,7 @@ public class AdminController {
             return  new ModelAndView("list_employee","employeeList",employeeList);
     }
     
-     @RequestMapping(value="/admin/updateLeaves", method = RequestMethod.GET)
+    @RequestMapping(value="/admin/updateLeaves", method = RequestMethod.GET)
     public ModelAndView updateLeaveView(HttpServletRequest request,Model model) throws CreateException {
             int leave_id = Integer.parseInt(request.getParameter("id"));
             LeaveInfo leave = leaveDao.getLeaveInfoById(leave_id);

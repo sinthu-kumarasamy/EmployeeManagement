@@ -138,7 +138,7 @@ public class LeaveDao extends BaseDao{
 		}
     }
    
-    public void update(EmployeeLeave leave) throws CreateException {
+    public void updateLeave(EmployeeLeave leave) throws CreateException {
 		try {
 			begin();
 			getSession().update(leave);
@@ -168,5 +168,8 @@ public class LeaveDao extends BaseDao{
 			throw new CreateException("Unable to add leave data for the user " + e.getMessage());
 		}
 	}
+     
+     
+        
     
 }

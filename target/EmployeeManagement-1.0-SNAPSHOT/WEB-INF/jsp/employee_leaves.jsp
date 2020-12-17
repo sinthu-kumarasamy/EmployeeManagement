@@ -49,6 +49,9 @@
            <c:if test="${addedLeave}">
                         <p style="color:green">Assigned leave Successfully</p>
                     </c:if>
+               <c:if test="${updatedLeave}">
+                        <p style="color:green">Updated leave details Successfully</p>
+                    </c:if>
                         <a class="btn btn-primary" href="${contextPath}/apply_leaves.htm">Apply Leave</a><br>
 		<table class="login" border="3">
 			<tr>
@@ -60,7 +63,7 @@
 				<th>Update</th>
 			</tr>
                         <c:forEach items="${leaveList}" var="leave">
-				<form action="${contextPath}/approve_leaves.htm" method="post">
+				<form action="${contextPath}/associate/editLeaves.htm">
                                     <input type="hidden" value="${leave.id}" name="id"/>	
                                     <tr>
 						<td>${leave.user.first_name} ${leave.user.last_name}</td>

@@ -19,10 +19,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +46,13 @@ public class AssociateController {
     
     @Autowired
     LeaveDao leaveDao;
+    
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        sdf.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+    }
     
     @RequestMapping(value="/associate/employee_tasks.htm",method = RequestMethod.GET)
     protected ModelAndView doGet(HttpServletRequest request,ModelMap map) throws CreateException {
@@ -70,7 +80,6 @@ public class AssociateController {
     protected ModelAndView applyLeaveForm(HttpServletRequest request) throws CreateException {
         HttpSession session = (HttpSession) request.getSession();
 	User user = (User) session.getAttribute("user");
-        List<EmployeeLeave>leavesList = leaveDao.getLeaveByUserId(user);
         return  new ModelAndView("apply_leaves","leave",new EmployeeLeave());
     }
     
@@ -102,6 +111,33 @@ public class AssociateController {
         map.put("completed",completedTasks);
         return  new ModelAndView("employee_tasks","map",map);   
     }
+    @RequestMapping(value="/associate/editLeaves.htm", method = RequestMethod.GET)
+    public ModelAndView updateLeaveView(HttpServletRequest request,Model model) throws CreateException {
+            int leave_id = Integer.parseInt(request.getParameter("id"));
+            EmployeeLeave leave = leaveDao.getLeaveById(leave_id);
+            model.addAttribute("leave", leave);
+            return  new ModelAndView("update_appliedLeaves");
+    }
     
+    @RequestMapping(value="/associate/editLeaves.htm", method = RequestMethod.POST)
+     public ModelAndView updateleave(@ModelAttribute("leave")EmployeeLeave leave,HttpServletRequest request,Model model) throws CreateException, ParseException {
+            System.out.println("leave");
+            int leave_id = Integer.parseInt(request.getParameter("id"));
+             EmployeeLeave leaveData = leaveDao.getLeaveById(leave_id);
+            leaveData.setReason(leave.getReason());
+            System.out.println(leaveData.getStart_date());
+            HttpSession session = (HttpSession) request.getSession();
+            User user = (User) session.getAttribute("user");
+            Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
+            Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date")); 
+            leaveData.setStart_date(start_date);
+            leaveData.setEnd_date(end_date);
+            leaveData.setUser(user);
+            leaveData.setStatus("Applied");
+            leaveDao.updateLeave(leaveData);
+            model.addAttribute("updatedLeave",true);
+            List<EmployeeLeave>leavesList = leaveDao.getLeaveByUserId(user);
+            return  new ModelAndView("employee_leaves","leaveList",leavesList);
+    }
     
 }

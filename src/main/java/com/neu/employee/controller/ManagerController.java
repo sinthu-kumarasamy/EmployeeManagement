@@ -112,4 +112,38 @@ public class ManagerController {
         List<EmployeeLeave>leavesList = leaveDao.getLeavesForApproval(user.getUser_id());
         return  new ModelAndView("approve_leaves","leaveList",leavesList);
     }
+    
+    @RequestMapping(value="/manager/updateTasks", method = RequestMethod.GET)
+    public ModelAndView updateTasksView(HttpServletRequest request,Model model) throws CreateException {
+            int task_id = Integer.parseInt(request.getParameter("id"));
+            Tasks task = tasksDao.getTaskById(task_id);
+            HttpSession session = (HttpSession) request.getSession();
+            User user = (User) session.getAttribute("user");
+            List<User>employeeList = userDao.getEmployeesByManagerId(user.getUser_id());
+            model.addAttribute("task", task);
+            return  new ModelAndView("update_tasks","employeeList",employeeList);
+    }
+    
+     @RequestMapping(value="/manager/updateTasks", method = RequestMethod.POST)
+     public ModelAndView updateTasks(@ModelAttribute("task")Tasks task,HttpServletRequest request,Model model) throws CreateException, ParseException {
+            int task_id = Integer.parseInt(request.getParameter("id"));
+            Tasks taskData = tasksDao.getTaskById(task_id); 
+            taskData.setCredits(task.getCredits());
+            String user_id = request.getParameter("user_id");
+            User user = userDao.getUserById(Integer.parseInt(user_id));
+            Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
+            Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date")); 
+            taskData.setStart_date(start_date);
+            taskData.setEnd_date(end_date);
+            taskData.setTaskDesc(task.getTaskDesc());
+            taskData.setStatus(task.getStatus());
+            taskData.setUser(user);
+            tasksDao.updateTaskDetails(taskData);
+            HttpSession session = (HttpSession) request.getSession();
+            User manager = (User) session.getAttribute("user");
+            List<Tasks> taskList = tasksDao.getTasks(manager.getUser_id());
+            model.addAttribute("updatedTask",true);
+            return  new ModelAndView("list_tasks","taskList",taskList);
+    }
+    
 }
