@@ -1,0 +1,12 @@
+body {
+	background-image: url(images/gettyimages-171290236-2048x2048.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+a {
+	margin-top: 100px;
+}
+
+.btn-primary{
+	  background-color: #4CAF50 !important;
+}
