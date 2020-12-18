@@ -57,7 +57,7 @@
 				<th>Update</th>
 			</tr>
                         <c:forEach items="${leaveList}" var="leave">
-				<form action="${contextPath}/approve_leaves.htm" method="post">
+				<form action="${contextPath}/manager/approve_leaves.htm" method="post">
                                     <input type="hidden" value="${leave.id}" name="id"/>	
                                     <tr>
 						<td>${leave.user.first_name} ${leave.user.last_name}</td>
@@ -65,7 +65,12 @@
 						<td>${leave.start_date}</td>
                                                 <td>${leave.end_date}</td>
                                                 <td>${leave.status}</td>
-                                                 <c:if test="${leave.status=='Approve'}">
+                                                 <c:if test="${leave.status=='Applied'}">
+                                                    <td><input class="btn btn-primary"  type="submit"
+                                                               name="action" value="Approve" ></td>
+						   <td><input type="submit"  name="action" value="Reject"></td>
+                                                </c:if>
+                                                <c:if test="${leave.status=='Approve'}">
                                                     <td><input class="btn btn-primary"  type="submit"
                                                                name="action" value="Approve" disabled="disabled"></td>
 						   <td><input type="submit"  name="action" value="Reject"></td>

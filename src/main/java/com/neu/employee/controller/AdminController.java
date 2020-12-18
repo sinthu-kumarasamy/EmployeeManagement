@@ -13,10 +13,7 @@ import com.neu.employee.model.User;
 import com.neu.employee.validator.LeaveInfoValidator;
 import com.neu.employee.validator.UserValidator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -129,13 +125,13 @@ public class AdminController {
     
     @RequestMapping(value="/admin/add_leaves.htm",method = RequestMethod.POST)
     public ModelAndView submitLeaveData(@ModelAttribute("leaveInfo")LeaveInfo leaveInfo, BindingResult result,Model model,HttpServletRequest request) throws CreateException { 
+         if(request.getAttribute("unsafe_input")=="true"){
+            return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+        }
         leaveValidator.validate(leaveInfo, result);
         List<User>employeeList = userDao.getAllEmployees();
         if(result.hasErrors()){
             return  new ModelAndView("add_leave","employeeList",employeeList);
-        }
-        if(request.getAttribute("unsafe_input")=="true"){
-            return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
         }
         String user_id = request.getParameter("user_id");
         User user = userDao.getUserById(Integer.parseInt(user_id));
@@ -159,15 +155,16 @@ public class AdminController {
     @RequestMapping(value="/admin/updateUser", method = RequestMethod.POST)
     public ModelAndView updateUserDetails(@ModelAttribute("user") User user,BindingResult result, HttpServletRequest request,Model model)  { 
         try {
+            if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            } 
             userValidator.validate(user, result);
             List<User>managerList = userDao.getAllManagers();
             if(result.hasErrors()){
                 return  new ModelAndView("add_employee","managerList",managerList);
                 
             }
-            if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
-            } 
+            
             int user_id = Integer.parseInt(request.getParameter("id"));
             User userData =  userDao.getUserById(user_id); 
             userData.setAddress(user.getAddress());
@@ -218,13 +215,13 @@ public class AdminController {
     
      @RequestMapping(value="/admin/updateLeaves", method = RequestMethod.POST)
     public ModelAndView updateLeaveDetails(@ModelAttribute("leaveInfo")LeaveInfo leave,BindingResult result,HttpServletRequest request,Model model) throws CreateException {
+         if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            }    
             leaveValidator.validate(leave, result);
             List<User>employeeList = userDao.getAllEmployees();
             if(result.hasErrors()){
                 return  new ModelAndView("add_leave","employeeList",employeeList);
-            }
-            if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
             }
             int leave_id = Integer.parseInt(request.getParameter("id"));
             LeaveInfo leaveData = leaveDao.getLeaveInfoById(leave_id);

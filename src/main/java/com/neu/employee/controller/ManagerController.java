@@ -76,6 +76,9 @@ public class ManagerController {
     
     @RequestMapping(value="/manager/add_tasks.htm",method = RequestMethod.POST)
     public ModelAndView createNewTask(@ModelAttribute("task")Tasks task, BindingResult result,Model model,HttpServletRequest request) throws CreateException, ParseException { 
+        if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            }
         taskValidator.validate(task, result);
         if(result.hasErrors()){
             HttpSession session = (HttpSession) request.getSession();
@@ -83,9 +86,6 @@ public class ManagerController {
             List<User>employeeList = userDao.getEmployeesByManagerId(user.getUser_id());
            return  new ModelAndView("add_tasks","employeeList",employeeList); 
         }
-         if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
-            }
         String user_id = request.getParameter("user_id");
         User user = userDao.getUserById(Integer.parseInt(user_id));
         Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
@@ -105,7 +105,6 @@ public class ManagerController {
     protected ModelAndView approveLeaves(HttpServletRequest request,Model model) throws CreateException {
         HttpSession session = (HttpSession) request.getSession();
 	User user = (User) session.getAttribute("user");
-         model.addAttribute("approve", false);
         List<EmployeeLeave>leavesList = leaveDao.getLeavesForApproval(user.getUser_id());
         return  new ModelAndView("approve_leaves","leaveList",leavesList);
     }

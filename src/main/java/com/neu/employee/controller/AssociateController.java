@@ -10,6 +10,7 @@ import com.neu.employee.dao.TasksDao;
 import com.neu.employee.dao.UserDao;
 import com.neu.employee.exception.CreateException;
 import com.neu.employee.model.EmployeeLeave;
+import com.neu.employee.model.LeaveInfo;
 import com.neu.employee.model.Tasks;
 import com.neu.employee.model.User;
 import com.neu.employee.validator.EmployeeLeaveValidator;
@@ -90,22 +91,38 @@ public class AssociateController {
     
     @RequestMapping(value="/associate/apply_leaves.htm",method = RequestMethod.POST)
     protected ModelAndView applyLeave(@ModelAttribute("leave")EmployeeLeave leave, BindingResult result,Model model,HttpServletRequest request) throws CreateException, ParseException {
+        if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+         }
         empLeaveValidator.validate(leave, result);
         if(result.hasErrors()){
            return  new ModelAndView("apply_leaves"); 
         }
-        if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
-            }
-        Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
-        Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date")); 
-        leave.setStart_date(start_date);
-        leave.setEnd_date(end_date);
         HttpSession session = (HttpSession) request.getSession();
 	User user = (User) session.getAttribute("user");
-        leaveDao.applyLeave(leave, user);
-        List<EmployeeLeave>leavesList = leaveDao.getLeaveByUserId(user);
-        return  new ModelAndView("employee_leaves","leaveList",leavesList);
+        List<LeaveInfo> leaveData = leaveDao.getUserLeaveById(user);
+        Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
+        Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date"));
+        boolean flag = false; 
+        for(LeaveInfo l  : leaveData){
+            System.out.println(start_date.getYear());
+            if(((start_date.getYear()+1900)== l.getYear() || (end_date.getYear()+1900)==l.getYear()) && l.getNo_of_days()>0){
+                System.out.println(start_date.getYear());
+                flag=true;
+            }
+        }
+        if(flag){
+           leave.setStart_date(start_date);
+            leave.setEnd_date(end_date);
+            leaveDao.applyLeave(leave, user);
+             List<EmployeeLeave>leavesList = leaveDao.getLeaveByUserId(user);
+            return  new ModelAndView("employee_leaves","leaveList",leavesList);  
+        }else{
+            model.addAttribute("applyLeave",true);
+             List<EmployeeLeave>leavesList = leaveDao.getLeaveByUserId(user);
+            return  new ModelAndView("employee_leaves","leaveList",leavesList);  
+        }
+        
     }
     
     @RequestMapping(value="/associate/updateTask.htm",method=RequestMethod.POST)

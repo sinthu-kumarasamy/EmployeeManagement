@@ -23,6 +23,9 @@
          <c:if test="${resetSuccess}">
                         <p style="color:green">Password has been changed successfully.Please login with your credentials below!</p>
                     </c:if>
+         <c:if test="${addedUser}">
+                        <p style="color:green">Registration Success!</p>
+                    </c:if>
 	<div align="center">
 		<a class="btn btn-primary" href="${contextPath}">Home</a> <a
 			class="btn btn-primary" href="${contextPath}/register.htm">Register</a>

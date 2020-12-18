@@ -43,7 +43,7 @@ public class EmployeeLeave implements Serializable {
     @Column(name="status")
     private String status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User user;
 
     public int getId() {

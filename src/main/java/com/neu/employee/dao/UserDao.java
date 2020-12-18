@@ -132,7 +132,7 @@ public class UserDao extends BaseDao{
                         }else{
                              user.setRole(userData.getRole());
                         }
-                        if(userData.getRole().equals("manager")){
+                        if(userData.getRole()!=null && userData.getRole().equals("manager")){
                             user.setManager_id(0);
                         }else{
                              user.setManager_id(userData.getManager_id()); 

@@ -54,6 +54,12 @@
 							type="number" /> <font color="red"><form:errors
 								path="contact" /></font></td>
 				</tr>
+                                <tr>
+					<td>Title:</td>
+					<td><form:input path="title" size="30"
+							 /> <font color="red"><form:errors
+								path="title" /></font></td>
+				</tr>
 				<tr>
 					<td></td>
 					<td><input class="btn btn-primary" type="submit"

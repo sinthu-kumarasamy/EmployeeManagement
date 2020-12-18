@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.springframework.format.annotation.NumberFormat;
@@ -36,7 +37,7 @@ public class LeaveInfo implements Serializable{
     @Column(name="year")
     private int year;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User user;
     
   

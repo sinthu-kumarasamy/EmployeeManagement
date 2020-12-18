@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -62,11 +63,14 @@ public class User implements Serializable {
     @Transient
     private String manager;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     List<Tasks> taskList;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     List<EmployeeLeave> leavesList;
+    
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    List<LeaveInfo> leaveInfo;
     
     public User() {
     }
@@ -167,6 +171,14 @@ public class User implements Serializable {
 
     public void setLeavesList(List<EmployeeLeave> leavesList) {
         this.leavesList = leavesList;
+    }
+
+    public List<LeaveInfo> getLeaveInfo() {
+        return leaveInfo;
+    }
+
+    public void setLeaveInfo(List<LeaveInfo> leaveInfo) {
+        this.leaveInfo = leaveInfo;
     }
     
     

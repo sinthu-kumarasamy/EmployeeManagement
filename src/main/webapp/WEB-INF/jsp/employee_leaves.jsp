@@ -48,10 +48,13 @@
         </div>
 	<div align="center">
            <c:if test="${addedLeave}">
-                        <p style="color:green">Assigned leave Successfully</p>
+                        <p style="color:green">Applied for leave Successfully</p>
                     </c:if>
                <c:if test="${updatedLeave}">
                         <p style="color:green">Updated leave details Successfully</p>
+                </c:if>
+                <c:if test="${applyLeave}">
+                        <p style="color:green">Leave not allocated for the selected year.Please contact HR for more details</p>
                     </c:if>
                         <a class="btn btn-primary" href="${contextPath}/associate/apply_leaves.htm">Apply Leave</a><br>
 		<table class="login" border="3">

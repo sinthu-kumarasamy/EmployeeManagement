@@ -41,7 +41,7 @@ public class UserValidator implements Validator{
         ValidationUtils.rejectIfEmptyOrWhitespace(err, "title", "empty-title","Please enter title!");
         try {
                 User userData = userDao.fetchUserByEmail(user.getEmail());
-                if (userData != null && userData.getPassword()==null) {
+                if (userData != null) {
                         err.rejectValue("email","email-exists","This email has already been registered!");
                 }
         } catch (CreateException e) {

@@ -96,6 +96,20 @@ public class LeaveDao extends BaseDao{
 			throw new CreateException("Data not found for given id", e);
 		}
     }
+     public List<LeaveInfo> getUserLeaveById(User user) throws CreateException{
+        try {
+			begin();
+			Query query = getSession().createQuery("from LeaveInfo where user=:user");
+			query.setParameter("user", user);
+			List<LeaveInfo> leavesList = query.list();
+			commit();
+			return leavesList;
+		} catch (HibernateException e) {
+			rollback();
+			throw new CreateException("Data not found for given id", e);
+		}
+    }
+    
     
       public LeaveInfo getLeaveInfoById(int id) throws CreateException{
         try {

@@ -44,7 +44,7 @@ public class UserRegistrationContoller {
     }
     
     @RequestMapping(value="/register.htm",method = RequestMethod.POST)
-    public ModelAndView submitUserData(@ModelAttribute("user")User user, BindingResult result,HttpServletRequest request) throws CreateException {
+    public ModelAndView submitUserData(@ModelAttribute("user")User user, BindingResult result,HttpServletRequest request,Model model) throws CreateException {
         if(request.getAttribute("unsafe_input")=="true"){
             return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
         }
@@ -54,7 +54,8 @@ public class UserRegistrationContoller {
         }
         
         userDao.registerNewUser(user);
-        return new ModelAndView("added_user","user",user);
+        model.addAttribute("addedUser",true);
+        return new ModelAndView("home","user",user);
     } 
     
     
