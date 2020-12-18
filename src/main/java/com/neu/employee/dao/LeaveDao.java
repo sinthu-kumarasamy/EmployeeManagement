@@ -9,7 +9,6 @@ import static com.neu.employee.dao.BaseDao.getSession;
 import com.neu.employee.exception.CreateException;
 import com.neu.employee.model.EmployeeLeave;
 import com.neu.employee.model.LeaveInfo;
-import com.neu.employee.model.Tasks;
 import com.neu.employee.model.User;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -168,7 +167,29 @@ public class LeaveDao extends BaseDao{
 			throw new CreateException("Unable to add leave data for the user " + e.getMessage());
 		}
 	}
-     
+      public void deleteLeaveInfo(LeaveInfo leave) {
+    	
+    	try {
+			begin();
+			getSession().delete(leave);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw new HibernateException("Unable to delete" + e.getMessage());
+		}
+    }
+      
+      public void deleteLeave(EmployeeLeave leave) {
+    	
+    	try {
+			begin();
+			getSession().delete(leave);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw new HibernateException("Unable to delete" + e.getMessage());
+		}
+    }
      
         
     

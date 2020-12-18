@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +38,28 @@ public class UserLoginContoller {
     protected String doGet(Model model) {
         model.addAttribute("user",new User());
         return "home";
+    }
+    
+    @RequestMapping(value="/reset_password.htm",method = RequestMethod.GET)
+    protected String resetView(Model model) {
+        model.addAttribute("user",new User());
+        return "reset_password";
+    }
+    
+    @RequestMapping(value="/reset_password.htm",method = RequestMethod.POST)
+    protected ModelAndView resetPassword(@ModelAttribute("user")User user,Model model,BindingResult result,HttpServletRequest request) throws CreateException {
+       if(request.getAttribute("unsafe_input")=="true"){
+            return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+        }
+        loginValidator.validate(user, result);
+        if (result.hasErrors()) {
+                return new ModelAndView("reset_password");
+        }
+        User userData = userDao.fetchUserByEmail(user.getEmail());
+        userData.setPassword(user.getPassword());
+        userDao.updateUserDetails(userData);
+        model.addAttribute("resetSuccess", true);
+        return new ModelAndView("home");
     }
     
     @RequestMapping(value = "/login.htm", method = RequestMethod.POST)

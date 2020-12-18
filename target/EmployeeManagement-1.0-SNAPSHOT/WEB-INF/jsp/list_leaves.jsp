@@ -34,6 +34,7 @@
                     <ul class="nav navbar-nav navbar-right">
                                <li><a href="${pageContext.request.contextPath}/admin/list_employee.htm">View/Add Employee</a></li> 
                                <li><a href="${pageContext.request.contextPath}/admin/list_leaves.htm">View/Add Leave</a></li>
+                               <li><a href="${pageContext.request.contextPath}">Logout</a></li>
                                <!--   <li><a href="${pageContext.request.contextPath}/jobseekerregister.htm">New Employees</a></li>
                                 <li><a href="${pageContext.request.contextPath}/employerLogin.htm">Sign In</a></li> -->
                                 <li class="logindd dropdown">
@@ -60,17 +61,15 @@
 				<th>Update</th>
 			</tr>
                         <c:forEach items="${leaveList}" var="leave">
-				<form action="${contextPath}/admin/updateLeaves.htm">
-                                    <input type="hidden" name="id" value="${leave.id}"/>
-					<tr>
-						<td>${leave.user.first_name} ${leave.user.last_name}</td>
-						<td>${leave.no_of_days}</td>
-                                                <td>${leave.year}</td>
-						<td><input class="btn btn-primary" type="submit"
-							name="action" value="Update"></td>
-						<!-- <td><input type="submit" name="action" value="Delete"></td> -->
-					</tr>
-				</form>
+				
+                                    <tr>
+                                            <td>${leave.user.first_name} ${leave.user.last_name}</td>
+                                            <td>${leave.no_of_days}</td>
+                                            <td>${leave.year}</td>
+                                             <td><a  href="updateLeaves/${leave.id}">Update</a></td>
+                                            <td><a  href="deleteLeave/${leave.id}">Delete</a></td>
+                                    </tr>
+				
 			</c:forEach>
 
 		</table>

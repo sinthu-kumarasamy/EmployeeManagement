@@ -11,9 +11,10 @@ import com.neu.employee.model.User;
 import com.neu.employee.validator.UserValidator;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,8 @@ public class UserRegistrationContoller {
     @Autowired
     UserDao userDao;
     
+    
+    
     @RequestMapping(value="/register.htm",method = RequestMethod.GET)
     protected String doGet(Model model) {
         User user = new User();
@@ -49,6 +52,7 @@ public class UserRegistrationContoller {
         if(result.hasErrors()){
             return new ModelAndView("user_register");
         }
+        
         userDao.registerNewUser(user);
         return new ModelAndView("added_user","user",user);
     } 

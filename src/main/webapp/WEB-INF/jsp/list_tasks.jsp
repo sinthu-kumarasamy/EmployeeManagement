@@ -35,6 +35,7 @@
                     <ul class="nav navbar-nav navbar-right">
                               <li><a href="${pageContext.request.contextPath}/manager/list_tasks.htm">View/Add Tasks</a></li> 
                                <li><a href="${pageContext.request.contextPath}/manager/approve_leaves.htm">Leave Approval</a></li>
+                               <li><a href="${pageContext.request.contextPath}">Logout</a></li>
                                <!--   <li><a href="${pageContext.request.contextPath}/jobseekerregister.htm">New Employees</a></li>
                                 <li><a href="${pageContext.request.contextPath}/employerLogin.htm">Sign In</a></li> -->
                                 <li class="logindd dropdown">
@@ -52,7 +53,7 @@
                       <c:if test="${updatedTask}">
                         <p style="color:green">Updated Task Successfully</p>
                     </c:if>
-                        <a class="btn btn-primary" href="${contextPath}/add_tasks.htm">Add New Task</a><br>
+                        <a class="btn btn-primary" href="${contextPath}/manager/add_tasks.htm">Add New Task</a><br>
 		<table class="login" border="3">
 			<tr>
 				<th>Task Description</th>
@@ -64,20 +65,17 @@
 				<th>Update Task</th>
 			</tr>
 			<c:forEach items="${tasklist}" var="task">
-                            <form action="${contextPath}/manager/updateTasks.htm">
-                                <input type="hidden" name="id" value="${task.id}"/>
-					<tr>
-						<td>${task.taskDesc}</td>
-						<td>${task.credits}</td>
-                                                <td><fmt:formatDate type = "date" value = "${task.start_date}" /></td>
-                                                <td><fmt:formatDate type = "date" value = "${task.end_date}" /></td>
-                                                <td>${task.user.first_name}${task.user.last_name}</td>
-                                                <td>${task.status}</td>
-						<td><input class="btn btn-primary" type="submit"
-							name="action" value="Update"></td>
-						<!-- <td><input type="submit" name="action" value="Delete"></td> -->
-					</tr>
-			  </form>
+                                <tr>
+                                        <td>${task.taskDesc}</td>
+                                        <td>${task.credits}</td>
+                                        <td><fmt:formatDate type = "date" value = "${task.start_date}" /></td>
+                                        <td><fmt:formatDate type = "date" value = "${task.end_date}" /></td>
+                                        <td>${task.user.first_name}${task.user.last_name}</td>
+                                        <td>${task.status}</td>
+                                         <td><a  href="updateTask/${task.id}">Update</a></td>
+                                        <td><a  href="deleteTask/${task.id}">Delete</a></td>
+                                </tr>
+			  
 
 			</c:forEach>
 		</table>

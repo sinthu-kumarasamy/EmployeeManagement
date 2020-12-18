@@ -6,6 +6,7 @@
 package com.neu.employee.model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class LeaveInfo implements Serializable{
     @Column(name="year")
     private int year;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
     
   
@@ -46,15 +47,6 @@ public class LeaveInfo implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-
-
-//    public int getNo_of_days() {
-//        return no_of_days;
-//    }
-//
-//    public void setNo_of_days(int no_of_days) {
-//        this.no_of_days = no_of_days;
-//    }
 
     public int getYear() {
         return year;

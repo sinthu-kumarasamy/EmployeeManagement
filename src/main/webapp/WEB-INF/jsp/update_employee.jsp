@@ -37,10 +37,11 @@ $(document).ready(function(){
  
     <body>
       <c:set var="managerList" value="${managerList}"/>
+      <c:set var="contextPath" value="${pageContext.request.contextPath}" />
        <c:set var="employee" value="${user}"/>
 	<div align="center">
 		<h2>Update Employee</h2>
-		<form:form modelAttribute="user" method="post">
+		<form:form modelAttribute="user" action="${contextPath}/admin/updateUser" method="post">
                       <input type="hidden" value="${employee.user_id}" name="id"/>
 			<table class="login">
 				<tr>

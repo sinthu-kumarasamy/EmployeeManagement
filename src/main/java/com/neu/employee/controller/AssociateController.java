@@ -12,6 +12,7 @@ import com.neu.employee.exception.CreateException;
 import com.neu.employee.model.EmployeeLeave;
 import com.neu.employee.model.Tasks;
 import com.neu.employee.model.User;
+import com.neu.employee.validator.EmployeeLeaveValidator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,11 +48,14 @@ public class AssociateController {
     @Autowired
     LeaveDao leaveDao;
     
+    @Autowired
+    EmployeeLeaveValidator empLeaveValidator;
+    
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-        sdf.setLenient(true);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        format.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
     }
     
     @RequestMapping(value="/associate/employee_tasks.htm",method = RequestMethod.GET)
@@ -86,6 +90,13 @@ public class AssociateController {
     
     @RequestMapping(value="/associate/apply_leaves.htm",method = RequestMethod.POST)
     protected ModelAndView applyLeave(@ModelAttribute("leave")EmployeeLeave leave, BindingResult result,Model model,HttpServletRequest request) throws CreateException, ParseException {
+        empLeaveValidator.validate(leave, result);
+        if(result.hasErrors()){
+           return  new ModelAndView("apply_leaves"); 
+        }
+        if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            }
         Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
         Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date")); 
         leave.setStart_date(start_date);
@@ -111,18 +122,29 @@ public class AssociateController {
         map.put("completed",completedTasks);
         return  new ModelAndView("employee_tasks","map",map);   
     }
-    @RequestMapping(value="/associate/editLeaves.htm", method = RequestMethod.GET)
-    public ModelAndView updateLeaveView(HttpServletRequest request,Model model) throws CreateException {
-            int leave_id = Integer.parseInt(request.getParameter("id"));
-            EmployeeLeave leave = leaveDao.getLeaveById(leave_id);
+    @RequestMapping(value="/associate/editLeaves/{id}", method = RequestMethod.GET)
+    public ModelAndView updateLeaveView(@PathVariable int id,HttpServletRequest request,Model model) throws CreateException {
+            EmployeeLeave leave = leaveDao.getLeaveById(id);
             model.addAttribute("leave", leave);
             return  new ModelAndView("update_appliedLeaves");
     }
+    @RequestMapping(value="/associate/deleteLeave/{id}",method=RequestMethod.GET)    
+    public String deleteTask(@PathVariable int id) throws CreateException{   
+       EmployeeLeave leave = leaveDao.getLeaveById(id);
+       leaveDao.deleteLeave(leave);
+        return "redirect:/associate/employee_leaves.htm";   
+    }
     
     @RequestMapping(value="/associate/editLeaves.htm", method = RequestMethod.POST)
-     public ModelAndView updateleave(@ModelAttribute("leave")EmployeeLeave leave,HttpServletRequest request,Model model) throws CreateException, ParseException {
-            System.out.println("leave");
-            int leave_id = Integer.parseInt(request.getParameter("id"));
+     public ModelAndView updateleave(@ModelAttribute("leave")EmployeeLeave leave,HttpServletRequest request,Model model,BindingResult result) throws CreateException, ParseException {
+          if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            } 
+           empLeaveValidator.validate(leave, result);
+            if(result.hasErrors()){
+               return  new ModelAndView("apply_leaves"); 
+            }
+           int leave_id = Integer.parseInt(request.getParameter("id"));
              EmployeeLeave leaveData = leaveDao.getLeaveById(leave_id);
             leaveData.setReason(leave.getReason());
             System.out.println(leaveData.getStart_date());

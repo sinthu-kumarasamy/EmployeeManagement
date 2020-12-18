@@ -47,10 +47,10 @@
  
     <body>
       <c:set var="employeeList" value="${employeeList}" />
- 
+       <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 	<div align="center">
 		<h2>Update Task</h2>
-		<form:form modelAttribute="task" method="post">
+		<form:form modelAttribute="task" action="${contextPath}/manager/updateTask" method="post">
                     <input type="hidden" value="${task.id}" name="id"/>
 			<table class="login">
 				<tr>

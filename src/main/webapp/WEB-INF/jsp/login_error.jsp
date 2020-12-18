@@ -13,5 +13,6 @@
     </head>
     <body>
         <h1>${errorMessage}</h1>
+        <a href="${pageContext.request.contextPath}">Return to home page</a>
     </body>
 </html>

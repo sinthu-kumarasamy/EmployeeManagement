@@ -34,6 +34,7 @@
                     <ul class="nav navbar-nav navbar-right">
                                <li><a href="${pageContext.request.contextPath}/admin/list_employee.htm">View/Add Employee</a></li> 
                                <li><a href="${pageContext.request.contextPath}/admin/list_leaves.htm">View/Add Leave</a></li>
+                               <li><a href="${pageContext.request.contextPath}">Logout</a></li>
                                <!--   <li><a href="${pageContext.request.contextPath}/jobseekerregister.htm">New Employees</a></li>
                                 <li><a href="${pageContext.request.contextPath}/employerLogin.htm">Sign In</a></li> -->
                                 <li class="logindd dropdown">
@@ -63,20 +64,18 @@
 				<th>Update Employee</th>
 			</tr>
 			<c:forEach items="${employeelist}" var="employee">
-				<form action="${contextPath}/admin/updateUser.htm">
-                                    <input type="hidden" name="id" value="${employee.user_id}"/>
-					<tr>
-						<td>${employee.first_name}</td>
-						<td>${employee.last_name}</td>
-						<td>${employee.email}</td>
-						<td>${employee.title}</td>
-						<td>${employee.role}</td>
-						<td>${employee.manager}</td>
-						<td><input class="btn btn-primary" type="submit"
-							name="action" value="Update"></td>
-						<!-- <td><input type="submit" name="action" value="Delete"></td> -->
-					</tr>
-				</form>
+                                <tr>
+                                        <td>${employee.first_name}</td>
+                                        <td>${employee.last_name}</td>
+                                        <td>${employee.email}</td>
+                                        <td>${employee.title}</td>
+                                        <td>${employee.role}</td>
+                                        <td>${employee.manager}</td>
+                                         <td><a  href="updateUser/${employee.user_id}">Update</a></td>
+                                        <td><a  href="deleteUser/${employee.user_id}">Delete</a></td>
+                                </tr>
+				
+                                
 			</c:forEach>
 		</table>
 	</div>

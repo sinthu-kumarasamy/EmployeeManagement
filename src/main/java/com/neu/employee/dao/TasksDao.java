@@ -164,4 +164,16 @@ public class TasksDao extends BaseDao {
             }
         }
         
+         public void deleteTask(Tasks task) {
+    	
+    	try {
+			begin();
+			getSession().delete(task);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw new HibernateException("Unable to delete the task" + e.getMessage());
+		}
+    }
+        
 }

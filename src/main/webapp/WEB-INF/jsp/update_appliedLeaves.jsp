@@ -46,9 +46,10 @@
     
  
     <body>
+         <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 	<div align="center">
 		<h2>Edit Leave</h2>
-		<form:form modelAttribute="leave" method="post">
+		<form:form modelAttribute="leave" action="${contextPath}/associate/editLeaves.htm" method="post">
                       <input type="hidden" value="${leave.id}" name="id"/>
 			<table class="login">
                                  <tr>

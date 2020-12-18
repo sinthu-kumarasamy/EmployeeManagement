@@ -19,14 +19,15 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,7 +51,12 @@ public class ManagerController {
     @Autowired
     TaskValidator taskValidator;
     
-   
+   @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        format.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+    }
     
     @RequestMapping(value="/manager/list_tasks.htm",method = RequestMethod.GET)
     protected ModelAndView doGet(HttpServletRequest request,HttpSession session) throws CreateException {
@@ -77,6 +83,9 @@ public class ManagerController {
             List<User>employeeList = userDao.getEmployeesByManagerId(user.getUser_id());
            return  new ModelAndView("add_tasks","employeeList",employeeList); 
         }
+         if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            }
         String user_id = request.getParameter("user_id");
         User user = userDao.getUserById(Integer.parseInt(user_id));
         Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
@@ -103,6 +112,9 @@ public class ManagerController {
     
     @RequestMapping(value="/manager/approve_leaves.htm",method = RequestMethod.POST)
     protected ModelAndView approveLeaveByManager(HttpServletRequest request,Model model) throws CreateException {
+         if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            }
         int id = Integer.parseInt(request.getParameter("id"));
         EmployeeLeave leave = leaveDao.getLeaveById(id);
         leave.setStatus(request.getParameter("action"));
@@ -113,10 +125,17 @@ public class ManagerController {
         return  new ModelAndView("approve_leaves","leaveList",leavesList);
     }
     
-    @RequestMapping(value="/manager/updateTasks", method = RequestMethod.GET)
-    public ModelAndView updateTasksView(HttpServletRequest request,Model model) throws CreateException {
-            int task_id = Integer.parseInt(request.getParameter("id"));
-            Tasks task = tasksDao.getTaskById(task_id);
+     @RequestMapping(value="/manager/deleteTask/{id}",method=RequestMethod.GET)    
+    public String deleteTask(@PathVariable int id) throws CreateException{   
+       Tasks task = tasksDao.getTaskById(id);
+       tasksDao.deleteTask(task);
+        return "redirect:/manager/list_tasks.htm";   
+    }
+    
+    
+    @RequestMapping(value="/manager/updateTask/{id}", method = RequestMethod.GET)
+    public ModelAndView updateTasksView(@PathVariable int id,HttpServletRequest request,Model model) throws CreateException {
+            Tasks task = tasksDao.getTaskById(id);
             HttpSession session = (HttpSession) request.getSession();
             User user = (User) session.getAttribute("user");
             List<User>employeeList = userDao.getEmployeesByManagerId(user.getUser_id());
@@ -124,8 +143,18 @@ public class ManagerController {
             return  new ModelAndView("update_tasks","employeeList",employeeList);
     }
     
-     @RequestMapping(value="/manager/updateTasks", method = RequestMethod.POST)
-     public ModelAndView updateTasks(@ModelAttribute("task")Tasks task,HttpServletRequest request,Model model) throws CreateException, ParseException {
+     @RequestMapping(value="/manager/updateTask", method = RequestMethod.POST)
+     public ModelAndView updateTasks(@ModelAttribute("task")Tasks task,BindingResult result,HttpServletRequest request,Model model) throws CreateException, ParseException {
+           taskValidator.validate(task, result);
+            if(result.hasErrors()){
+                HttpSession session = (HttpSession) request.getSession();
+                User user = (User) session.getAttribute("user");
+                List<User>employeeList = userDao.getEmployeesByManagerId(user.getUser_id());
+               return  new ModelAndView("add_tasks","employeeList",employeeList); 
+            }
+             if(request.getAttribute("unsafe_input")=="true"){
+                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            }
             int task_id = Integer.parseInt(request.getParameter("id"));
             Tasks taskData = tasksDao.getTaskById(task_id); 
             taskData.setCredits(task.getCredits());

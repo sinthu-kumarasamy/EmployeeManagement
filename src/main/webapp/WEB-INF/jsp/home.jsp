@@ -20,6 +20,9 @@
     </head>
     <body>
         <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+         <c:if test="${resetSuccess}">
+                        <p style="color:green">Password has been changed successfully.Please login with your credentials below!</p>
+                    </c:if>
 	<div align="center">
 		<a class="btn btn-primary" href="${contextPath}">Home</a> <a
 			class="btn btn-primary" href="${contextPath}/register.htm">Register</a>
@@ -44,6 +47,8 @@
 				</tr>
 			</table>
 		</form:form>
+                 <a  href="${contextPath}/reset_password.htm">Click here to Reset Password</a> 
+		<br />
 	</div>
     </body>
 </html>

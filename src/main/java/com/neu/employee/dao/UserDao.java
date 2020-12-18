@@ -6,7 +6,6 @@
 package com.neu.employee.dao;
 
 import com.neu.employee.exception.CreateException;
-import com.neu.employee.model.LeaveInfo;
 import com.neu.employee.model.User;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -119,6 +118,8 @@ public class UserDao extends BaseDao{
 		}
 	}
     
+    
+    
     public User registerNewUser(User userData) throws CreateException {
 		try {
 			begin();
@@ -136,12 +137,7 @@ public class UserDao extends BaseDao{
                         }else{
                              user.setManager_id(userData.getManager_id()); 
                         }
-                       
-                        if(userData.getPassword()==null){
-                            user.setPassword("dummy");
-                        }else{
-                           user.setPassword(userData.getPassword()); 
-                        }
+                       user.setPassword(userData.getPassword()); 
                         user.setAddress(userData.getAddress());
                         user.setContact(userData.getContact());
                         user.setTitle(userData.getTitle());
@@ -153,6 +149,18 @@ public class UserDao extends BaseDao{
 			throw new CreateException("Unable to register the user " + e.getMessage());
 		}
 	}
+    
+     public void deleteUser(User user) {
+    	
+    	try {
+			begin();
+			getSession().delete(user);
+			commit();
+		} catch (HibernateException e) {
+			rollback();
+			throw new HibernateException("Unable to delete the user " + e.getMessage());
+		}
+    }
     
        public void updateUserDetails(User userData) {
     	try {

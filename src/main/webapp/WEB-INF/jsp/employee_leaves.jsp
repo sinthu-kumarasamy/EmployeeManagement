@@ -35,6 +35,7 @@
                     <ul class="nav navbar-nav navbar-right">
                                <li><a href="${pageContext.request.contextPath}/associate/employee_tasks.htm">My Tasks</a></li> 
                                <li><a href="${pageContext.request.contextPath}/associate/employee_leaves.htm">Apply Leave</a></li>
+                               <li><a href="${pageContext.request.contextPath}">Logout</a></li>
                                <!--   <li><a href="${pageContext.request.contextPath}/jobseekerregister.htm">New Employees</a></li>
                                 <li><a href="${pageContext.request.contextPath}/employerLogin.htm">Sign In</a></li> -->
                                 <li class="logindd dropdown">
@@ -52,7 +53,7 @@
                <c:if test="${updatedLeave}">
                         <p style="color:green">Updated leave details Successfully</p>
                     </c:if>
-                        <a class="btn btn-primary" href="${contextPath}/apply_leaves.htm">Apply Leave</a><br>
+                        <a class="btn btn-primary" href="${contextPath}/associate/apply_leaves.htm">Apply Leave</a><br>
 		<table class="login" border="3">
 			<tr>
 				<th>Employee Name</th>
@@ -62,20 +63,17 @@
                                 <th>Status</th>
 				<th>Update</th>
 			</tr>
-                        <c:forEach items="${leaveList}" var="leave">
-				<form action="${contextPath}/associate/editLeaves.htm">
-                                    <input type="hidden" value="${leave.id}" name="id"/>	
-                                    <tr>
-						<td>${leave.user.first_name} ${leave.user.last_name}</td>
-						<td><fmt:formatDate type = "date" value = "${leave.start_date}" /></td>
-                                                <td><fmt:formatDate type = "date" value = "${leave.end_date}" /></td>
-                                                <td>${leave.reason}</td>
-                                                <td>${leave.status}</td>
-						<td><input class="btn btn-primary" type="submit"
-							name="action" value="Update"></td>
-						 <td><input type="submit" name="action" value="Delete"></td> 
-					</tr>
-				</form>
+                        <c:forEach items="${leaveList}" var="leave">	
+                            <tr>
+                                        <td>${leave.user.first_name} ${leave.user.last_name}</td>
+                                        <td><fmt:formatDate type = "date" value = "${leave.start_date}" /></td>
+                                        <td><fmt:formatDate type = "date" value = "${leave.end_date}" /></td>
+                                        <td>${leave.reason}</td>
+                                        <td>${leave.status}</td>
+                                         <td><a  href="editLeaves/${leave.id}">Update</a></td>
+                                         <td><a  href="deleteLeave/${leave.id}">Delete</a></td> 
+                                </tr>
+				
 			</c:forEach>
 
 		</table>

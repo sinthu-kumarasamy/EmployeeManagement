@@ -22,6 +22,31 @@
         <c:set var="contextPath" value="${pageContext.request.contextPath}" />
         <c:set var="map" value="${map}" />
         <div class="container">
+            <nav class="navbar navbar-default ">
+            <div class="container-fluid bg-sucess">
+<!--            <div class="navbar-header ">
+            
+                <a class="navbar-brand" href="${pageContext.request.contextPath}/diverthome.htm">Job Portal</a>
+                </div>-->
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav bg-info">
+                         <li class="active "><a href="#">Dashboard</a></li>
+            
+                  </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                               <li><a href="${pageContext.request.contextPath}/associate/employee_tasks.htm">My Tasks</a></li> 
+                               <li><a href="${pageContext.request.contextPath}/associate/employee_leaves.htm">Apply Leave</a></li>
+                                <li><a href="${pageContext.request.contextPath}">Logout</a></li>
+<!--                                  <li><a href="${pageContext.request.contextPath}/employerregister.htm">New Employers</a></li>
+                                <li><a href="${pageContext.request.contextPath}/jobseekerregister.htm">New Employees</a></li>
+                                <li><a href="${pageContext.request.contextPath}/employerLogin.htm">Sign In</a></li> -->
+                                <li class="logindd dropdown">
+       
+             </li>
+                    </ul>
+              </div>
+            </div>
+        </nav>
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#pending">Pending Tasks</a></li>
           <li><a data-toggle="tab" href="#completed">Completed Tasks</a></li>

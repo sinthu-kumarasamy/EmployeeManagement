@@ -25,7 +25,7 @@
 		<form:form modelAttribute="leave" method="post">
 			<table class="login">
                                 <tr>
-					<td>Start Date"</td>
+					<td>Start Date</td>
 					<td><input type="date" name="start_date" 
 							 /> <font color="red"><form:errors
 								path="start_date" /></font></td>

@@ -27,4 +27,5 @@
     <bean id="userValidator" class="com.neu.employee.validator.UserValidator"></bean>
     <bean id="leaveValidator" class="com.neu.employee.validator.LeaveInfoValidator"></bean>
     <bean id="taskValidator" class="com.neu.employee.validator.TaskValidator"></bean>
+    <bean id="empLeaveValidator" class="com.neu.employee.validator.EmployeeLeaveValidator"></bean>
 </beans>

@@ -34,6 +34,7 @@
                     <ul class="nav navbar-nav navbar-right">
                                <li><a href="${pageContext.request.contextPath}/manager/list_tasks.htm">View/Add Tasks</a></li> 
                                <li><a href="${pageContext.request.contextPath}/manager/approve_leaves.htm">Leave Approval</a></li>
+                               <li><a href="${pageContext.request.contextPath}">Logout</a></li>
 <!--                                  <li><a href="${pageContext.request.contextPath}/employerregister.htm">New Employers</a></li>
                                 <li><a href="${pageContext.request.contextPath}/jobseekerregister.htm">New Employees</a></li>
                                 <li><a href="${pageContext.request.contextPath}/employerLogin.htm">Sign In</a></li> -->

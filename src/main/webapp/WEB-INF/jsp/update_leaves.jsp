@@ -15,9 +15,10 @@
     </head>
      <body>
       <c:set var="leaveInfo" value="${leaveInfo}"/>
+       <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 	<div align="center">
 		<h2>Update Leave</h2>
-		<form:form modelAttribute="leaveInfo" method="post">
+		<form:form modelAttribute="leaveInfo" action="${contextPath}/admin/updateLeaves" method="post">
                     <input type="hidden" value="${leaveInfo.id}" name="id"/>
 			<table class="login">
 				<tr>
