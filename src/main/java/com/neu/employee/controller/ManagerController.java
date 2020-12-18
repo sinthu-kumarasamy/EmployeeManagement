@@ -77,7 +77,11 @@ public class ManagerController {
     @RequestMapping(value="/manager/add_tasks.htm",method = RequestMethod.POST)
     public ModelAndView createNewTask(@ModelAttribute("task")Tasks task, BindingResult result,Model model,HttpServletRequest request) throws CreateException, ParseException { 
         if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+               model.addAttribute("errorMessage","Please enter valid input");
+               HttpSession session = (HttpSession) request.getSession();
+                User user = (User) session.getAttribute("user");
+                List<User>employeeList = userDao.getEmployeesByManagerId(user.getUser_id());
+               return  new ModelAndView("add_tasks","employeeList",employeeList);
             }
         taskValidator.validate(task, result);
         if(result.hasErrors()){
@@ -111,14 +115,16 @@ public class ManagerController {
     
     @RequestMapping(value="/manager/approve_leaves.htm",method = RequestMethod.POST)
     protected ModelAndView approveLeaveByManager(HttpServletRequest request,Model model) throws CreateException {
+         HttpSession session = (HttpSession) request.getSession();
+	User user = (User) session.getAttribute("user");
          if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+                List<EmployeeLeave>leavesList = leaveDao.getLeavesForApproval(user.getUser_id());
+                 model.addAttribute("errorMessage","Please enter valid input");
+                return  new ModelAndView("approve_leaves","leaveList",leavesList);
             }
         int id = Integer.parseInt(request.getParameter("id"));
         EmployeeLeave leave = leaveDao.getLeaveById(id);
         leave.setStatus(request.getParameter("action"));
-        HttpSession session = (HttpSession) request.getSession();
-	User user = (User) session.getAttribute("user");
         model.addAttribute("approve", true);
         List<EmployeeLeave>leavesList = leaveDao.getLeavesForApproval(user.getUser_id());
         return  new ModelAndView("approve_leaves","leaveList",leavesList);
@@ -144,16 +150,21 @@ public class ManagerController {
     
      @RequestMapping(value="/manager/updateTask", method = RequestMethod.POST)
      public ModelAndView updateTasks(@ModelAttribute("task")Tasks task,BindingResult result,HttpServletRequest request,Model model) throws CreateException, ParseException {
-           taskValidator.validate(task, result);
+         if(request.getAttribute("unsafe_input")=="true"){
+                model.addAttribute("errorMessage","Please enter valid input");
+                HttpSession session = (HttpSession) request.getSession();
+                User user = (User) session.getAttribute("user");
+                List<User>employeeList = userDao.getEmployeesByManagerId(user.getUser_id());
+               return  new ModelAndView("update_tasks","employeeList",employeeList); 
+            }  
+         taskValidator.validate(task, result);
             if(result.hasErrors()){
                 HttpSession session = (HttpSession) request.getSession();
                 User user = (User) session.getAttribute("user");
                 List<User>employeeList = userDao.getEmployeesByManagerId(user.getUser_id());
-               return  new ModelAndView("add_tasks","employeeList",employeeList); 
+               return  new ModelAndView("update_tasks","employeeList",employeeList); 
             }
-             if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
-            }
+             
             int task_id = Integer.parseInt(request.getParameter("id"));
             Tasks taskData = tasksDao.getTaskById(task_id); 
             taskData.setCredits(task.getCredits());

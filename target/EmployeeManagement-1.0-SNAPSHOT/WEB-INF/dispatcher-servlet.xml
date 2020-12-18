@@ -17,6 +17,10 @@
           <mvc:mapping path="/login.htm" />
           <bean class="com.neu.employee.interceptor.LoginInterceptor" />
         </mvc:interceptor>
+        <mvc:interceptor>
+          <mvc:mapping path="/reset_password.htm" />
+          <bean class="com.neu.employee.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
      </mvc:interceptors>
      
      <mvc:interceptors>

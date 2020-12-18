@@ -36,7 +36,7 @@ public class LoginValidator implements Validator{
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "empty-pwd", "Please Enter the password");
         try {
                 User userData = userDao.fetchUserByEmail(user.getEmail());
-                if (userData == null) {
+                if (userData == null && !user.getEmail().isEmpty()) {
                         errors.rejectValue("email","email-invalid","Email has not been registered!");
                 }
         } catch (CreateException e) {

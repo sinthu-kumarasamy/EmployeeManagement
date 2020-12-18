@@ -12,46 +12,38 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Page</title>
-        <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>">
         <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-</head>
-        
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <style><%@include file="/resources/css/style.css"%></style>
     </head>
+
     <body>
         <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-         <c:if test="${resetSuccess}">
-                        <p style="color:green">Password has been changed successfully.Please login with your credentials below!</p>
-                    </c:if>
-         <c:if test="${addedUser}">
-                        <p style="color:green">Registration Success!</p>
-                    </c:if>
-	<div align="center">
-		<a class="btn btn-primary" href="${contextPath}">Home</a> <a
-			class="btn btn-primary" href="${contextPath}/register.htm">Register</a>
-		<br />
-		<h4>Please enter your details below to login!</h4>
-		<form:form action="login.htm" modelAttribute="user" method="post">
-			<table class="login">
-				<tr>
-					<td>Email:</td>
-					<td><form:input path="email" size="30" /><font color="red"><form:errors
-								path="email" /></td>
-				</tr>
-				<tr>
-					<td>Password:</td>
-					<td><form:password  path="password" size="30"
-						/><font color="red"><form:errors
-								path="password" /></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><input class="btn btn-primary" type="submit" value="Login" /></td>
-				</tr>
-			</table>
-		</form:form>
-                 <a  href="${contextPath}/reset_password.htm">Click here to Reset Password</a> 
-		<br />
-	</div>
+        <c:if test="${resetSuccess}">
+            <p style="color:green">Password has been changed successfully.Please login with your credentials below!</p>
+        </c:if>
+        <c:if test="${addedUser}">
+            <p style="color:green">Registration Success!</p>
+        </c:if>
+        <form:form action="login.htm" modelAttribute="user" method="post">
+
+            <div class="form-content">
+                <p style="text-align: center;font-size: 20px;font-weight: bold">Login</p>
+                 <c:if test="${not empty errorMessage}">
+                    <p style="color:red">${errorMessage}</p>
+                </c:if>
+                <label for="uname"><b>Username</b></label>
+                <form:input path="email" size="30" /><font color="red"><form:errors path="email" /></font>
+
+                <label for="psw"><b>Password</b></label>
+                <form:password  path="password" size="30"/><font color="red"><form:errors path="password" />
+
+                <input class="button" value="Login" type="submit"/>
+                <span class="psw" style="float:left"><a class="reg-button" href="${contextPath}/register.htm">Register</a></span>
+                <span class="psw"><a class="reg-button" href="${contextPath}/reset_password.htm">Reset Password</a></span>
+            </div>
+        </form:form>
     </body>
 </html>
+
+

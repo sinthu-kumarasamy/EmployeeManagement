@@ -12,88 +12,69 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style><%@include file="/resources/css/style.css"%></style>
         <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        </script>       
-<script>
-$(document).ready(function(){
-    $("#employeeRole").change(function(){
-       var textselected =  document.getElementById("employeeRole").value ;
-       if(textselected === "manager")
-        $('#reporting_manager').hide();
-       else
-        $('#reporting_manager').show(); 
-    });
-  });
-</script>
-    </head>
-    
- 
-    <body>
-      <c:set var="managerList" value="${managerList}" />
-	<div align="center">
-		<h2>Add New Employee</h2>
-		<form:form modelAttribute="user" method="post">
-			<table class="login">
-				<tr>
-					<td>First Name:</td>
-					<td><form:input path="first_name" size="30" />
-						<font color="red"><form:errors path="first_name" /></font></td>
-				</tr>
-				<tr>
-					<td>Last Name:</td>
-					<td><form:input path="last_name" size="30" />
-						<font color="red"><form:errors path="last_name" /></font></td>
-				</tr>
-                                <tr>
-					<td>Email ID:</td>
-					<td><form:input path="email" size="30"
-							type="email" /> <font color="red"><form:errors
-								path="email" /></font></td>
-				</tr>
-                                 <tr>
-					<td>Address:</td>
-					<td><form:input path="address" size="30"
-							 /> <font color="red"><form:errors
-								path="address" /></font></td>
-				</tr>
-				  <tr>
-					<td>Contact Number:</td>
-					<td><form:input path="contact" size="30"
-							type="number" /> <font color="red"><form:errors
-								path="contact" /></font></td>
-				</tr>
-                                <tr>
-					<td>Role :</td>
-					<td><form:select id="employeeRole" path="role">
-                                                <form:option value="associate">Associate</form:option>
-                                                <form:option value="manager">Manager</form:option>
-                                                
-					</form:select></td>
-				</tr>
-                                 <tr>
-					<td>Title:</td>
-					<td><form:input path="title" size="30"
-							 /> <font color="red"><form:errors
-								path="title" /></font></td>
-				</tr>
-                                
-                                <tr id="reporting_manager">
-					<td>Reporting Manager :</td>
-					<td><form:select id="manager" path="manager_id">
-                                                <c:forEach var="item" items="${managerList}">
-						    <option value="${item.user_id}">${item.first_name} ${item.last_name}</option>
-						</c:forEach>
-					</form:select></td>
-				</tr>
-                                
-				<tr>
-					<td></td>
-					<td><input class="btn btn-primary" type="submit"
-						value="Add Employee" /></td>
-				</tr>
-			</table>
-		</form:form>
-	</div>
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </script>       
+    <script>
+        $(document).ready(function () {
+            $("#employeeRole").change(function () {
+                var textselected = document.getElementById("employeeRole").value;
+                if (textselected === "manager")
+                    $('#reporting_manager').hide();
+                else
+                    $('#reporting_manager').show();
+            });
+        });
+    </script>
+</head>
+
+
+<body>
+    <c:set var="managerList" value="${managerList}" />
+    <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+    <form:form modelAttribute="user" method="post">
+        <p style="text-align: center;font-size: 20px;font-weight: bold">Add New Employee</p>
+        <div class="form-content">
+            <c:if test="${not empty errorMessage}">
+                    <p style="color:red">${errorMessage}</p>
+             </c:if>
+            <label>First Name:</label><form:input path="first_name" size="30" />
+            <font color="red"><form:errors path="first_name" /></font>
+            <label>Last Name:</label><form:input path="last_name" size="30" />
+            <font color="red"><form:errors path="last_name" /></font>
+            <label>Email ID:</label><form:input path="email" size="30"
+                        type="email" /> <font color="red"><form:errors
+                        path="email" /></font>
+            <label>Address:</label><form:input path="address" size="30"
+                        /> <font color="red"><form:errors
+                        path="address" /></font>
+            <label>Contact Number:</label><form:input path="contact" size="30"
+                        type="number" /> <font color="red"><form:errors
+                        path="contact" /></font>
+            <label>Role :</label>
+            <form:select id="employeeRole" path="role">
+                <form:option value="associate">Associate</form:option>
+                <form:option value="manager">Manager</form:option>
+
+            </form:select>
+            <label>Title:</label><form:input path="title" size="30"
+                        /> <font color="red"><form:errors
+                        path="title" /></font>
+
+            <div id="reporting_manager">
+                <label>Reporting Manager :</label>
+                <form:select id="manager" path="manager_id">
+                    <c:forEach var="item" items="${managerList}">
+                        <option value="${item.user_id}">${item.first_name} ${item.last_name}
+                        </c:forEach>
+                    </form:select>
+            </div>
+
+            <input class="button" type="submit"
+                   value="Add Employee" />
+            <span class="psw"><a class="reg-button" href="${contextPath}/admin/list_employee.htm">Back</a></span>
+        </div>		
+    </form:form>
 </body>
 </html>

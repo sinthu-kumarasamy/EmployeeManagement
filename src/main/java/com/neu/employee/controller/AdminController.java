@@ -79,15 +79,16 @@ public class AdminController {
     
     @RequestMapping(value="/admin/add_employee.htm",method = RequestMethod.POST)
     public ModelAndView submitUserData(@ModelAttribute("user")User user, HttpServletRequest request,BindingResult result,Model model) throws CreateException {
+         List<User>managerList = userDao.getAllManagers();
+         if(request.getAttribute("unsafe_input")=="true"){
+            model.addAttribute("errorMessage","Please enter valid input");
+            return new  ModelAndView("add_employee","managerList",managerList);
+        } 
         userValidator.validate(user, result);
-        List<User>managerList = userDao.getAllManagers();
          if(result.hasErrors()){
             return  new ModelAndView("add_employee","managerList",managerList);
             
         }
-        if(request.getAttribute("unsafe_input")=="true"){
-            return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
-        } 
         RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('a','z').build();
         String password = generator.generate(10);
         user.setPassword(password);
@@ -125,11 +126,12 @@ public class AdminController {
     
     @RequestMapping(value="/admin/add_leaves.htm",method = RequestMethod.POST)
     public ModelAndView submitLeaveData(@ModelAttribute("leaveInfo")LeaveInfo leaveInfo, BindingResult result,Model model,HttpServletRequest request) throws CreateException { 
-         if(request.getAttribute("unsafe_input")=="true"){
-            return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+        List<User>employeeList = userDao.getAllEmployees();
+        if(request.getAttribute("unsafe_input")=="true"){
+              model.addAttribute("errorMessage","Please enter valid input");
+            return  new ModelAndView("add_leave","employeeList",employeeList);
         }
         leaveValidator.validate(leaveInfo, result);
-        List<User>employeeList = userDao.getAllEmployees();
         if(result.hasErrors()){
             return  new ModelAndView("add_leave","employeeList",employeeList);
         }
@@ -155,13 +157,14 @@ public class AdminController {
     @RequestMapping(value="/admin/updateUser", method = RequestMethod.POST)
     public ModelAndView updateUserDetails(@ModelAttribute("user") User user,BindingResult result, HttpServletRequest request,Model model)  { 
         try {
+             List<User>managerList = userDao.getAllManagers();
             if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+                 model.addAttribute("errorMessage","Please enter valid input");
+                return  new ModelAndView("update_employee","managerList",managerList);
             } 
             userValidator.validate(user, result);
-            List<User>managerList = userDao.getAllManagers();
             if(result.hasErrors()){
-                return  new ModelAndView("add_employee","managerList",managerList);
+                return  new ModelAndView("update_employee","managerList",managerList);
                 
             }
             
@@ -215,12 +218,13 @@ public class AdminController {
     
      @RequestMapping(value="/admin/updateLeaves", method = RequestMethod.POST)
     public ModelAndView updateLeaveDetails(@ModelAttribute("leaveInfo")LeaveInfo leave,BindingResult result,HttpServletRequest request,Model model) throws CreateException {
-         if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+        List<User>employeeList = userDao.getAllEmployees(); 
+        if(request.getAttribute("unsafe_input")=="true"){
+               return  new ModelAndView("add_leave","employeeList",employeeList);
             }    
             leaveValidator.validate(leave, result);
-            List<User>employeeList = userDao.getAllEmployees();
             if(result.hasErrors()){
+                model.addAttribute("errorMessage","Please enter valid input");
                 return  new ModelAndView("add_leave","employeeList",employeeList);
             }
             int leave_id = Integer.parseInt(request.getParameter("id"));

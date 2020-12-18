@@ -46,7 +46,7 @@ public class UserRegistrationContoller {
     @RequestMapping(value="/register.htm",method = RequestMethod.POST)
     public ModelAndView submitUserData(@ModelAttribute("user")User user, BindingResult result,HttpServletRequest request,Model model) throws CreateException {
         if(request.getAttribute("unsafe_input")=="true"){
-            return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            return new  ModelAndView("user_register","errorMessage","Please enter valid input");
         }
         userValidator.validate(user, result);
         if(result.hasErrors()){

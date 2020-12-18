@@ -175,5 +175,22 @@ public class TasksDao extends BaseDao {
 			throw new HibernateException("Unable to delete the task" + e.getMessage());
 		}
     }
+         
+        public Long getCredits(User user) throws HibernateException {
+		try {
+			begin();
+			Query query = getSession().createQuery("select sum(credits) from Tasks where user=:user and status=:status");
+			query.setParameter("user", user);
+                        query.setParameter("status", "completed");
+                        Long task = (Long)query.getSingleResult();
+			commit();
+			return task;
+		} catch (HibernateException e) {
+			rollback();
+			throw new HibernateException("Unable to compute credits", e);
+		}
+	}
+         
+         
         
 }

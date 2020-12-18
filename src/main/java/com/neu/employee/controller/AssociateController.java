@@ -66,6 +66,8 @@ public class AssociateController {
         List<Tasks>completedTasks = tasksDao.getAllCompletedTasks(user);
         List<Tasks>overdueTasks = tasksDao.getOverdueTasks(user);
         List<Tasks>pendingTasks = tasksDao.getAllActiveTasks(user);
+        Long credits = tasksDao.getCredits(user);
+        session.setAttribute("credits", credits);
         map.put("pending",pendingTasks);
         map.put("overdue",overdueTasks);
         map.put("completed",completedTasks);
@@ -92,7 +94,8 @@ public class AssociateController {
     @RequestMapping(value="/associate/apply_leaves.htm",method = RequestMethod.POST)
     protected ModelAndView applyLeave(@ModelAttribute("leave")EmployeeLeave leave, BindingResult result,Model model,HttpServletRequest request) throws CreateException, ParseException {
         if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            model.addAttribute("errorMessage","Please enter valid input");
+             return  new ModelAndView("apply_leaves"); 
          }
         empLeaveValidator.validate(leave, result);
         if(result.hasErrors()){
@@ -107,7 +110,6 @@ public class AssociateController {
         for(LeaveInfo l  : leaveData){
             System.out.println(start_date.getYear());
             if(((start_date.getYear()+1900)== l.getYear() || (end_date.getYear()+1900)==l.getYear()) && l.getNo_of_days()>0){
-                System.out.println(start_date.getYear());
                 flag=true;
             }
         }
@@ -155,11 +157,12 @@ public class AssociateController {
     @RequestMapping(value="/associate/editLeaves.htm", method = RequestMethod.POST)
      public ModelAndView updateleave(@ModelAttribute("leave")EmployeeLeave leave,HttpServletRequest request,Model model,BindingResult result) throws CreateException, ParseException {
           if(request.getAttribute("unsafe_input")=="true"){
-                return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+                model.addAttribute("errorMessage","Please enter valid input");
+                return  new ModelAndView("update_leaves"); 
             } 
            empLeaveValidator.validate(leave, result);
             if(result.hasErrors()){
-               return  new ModelAndView("apply_leaves"); 
+               return  new ModelAndView("update_leaves"); 
             }
            int leave_id = Integer.parseInt(request.getParameter("id"));
              EmployeeLeave leaveData = leaveDao.getLeaveById(leave_id);

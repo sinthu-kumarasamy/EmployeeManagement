@@ -49,7 +49,7 @@ public class UserLoginContoller {
     @RequestMapping(value="/reset_password.htm",method = RequestMethod.POST)
     protected ModelAndView resetPassword(@ModelAttribute("user")User user,Model model,BindingResult result,HttpServletRequest request) throws CreateException {
        if(request.getAttribute("unsafe_input")=="true"){
-            return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            return new  ModelAndView("reset_password","errorMessage","Please enter valid input");
         }
         loginValidator.validate(user, result);
         if (result.hasErrors()) {
@@ -65,7 +65,7 @@ public class UserLoginContoller {
     @RequestMapping(value = "/login.htm", method = RequestMethod.POST)
     protected ModelAndView user_login(@ModelAttribute("user")User user, BindingResult result,HttpServletRequest request,HttpServletResponse response,Model model,HttpSession session) throws Exception {
         if(request.getAttribute("unsafe_input")=="true"){
-            return new  ModelAndView("login_error","errorMessage","Unsafe string literals are not allowed");
+            return new  ModelAndView("home","errorMessage","Please enter valid input");
         }
         loginValidator.validate(user, result);
         if (result.hasErrors()) {
@@ -74,8 +74,7 @@ public class UserLoginContoller {
         try {
                     User userData = userDao.getUser(user.getEmail(), user.getPassword());
                     if (userData == null) {
-                        model.addAttribute("errorMessage", "Invalid username and password! Please try again!");
-                        return new ModelAndView("login_error");
+                        return new ModelAndView("home","errorMessage", "Invalid username and password! Please try again!");
                     }
                     session.setAttribute("user", userData);
                     String role = userData.getRole().trim();

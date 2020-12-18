@@ -13,73 +13,57 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>">
+        <style><%@include file="/resources/css/style.css"%></style>
         <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     </head>
     <body>
-	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-	<c:set var="leaveList" value="${leaveList}" />
-        <div class= "navbar">
-           <nav class="navbar navbar-default ">
-            <div class="container-fluid bg-sucess">
-<!--            <div class="navbar-header ">
-            
-                <a class="navbar-brand" href="${pageContext.request.contextPath}/diverthome.htm">Job Portal</a>
-                </div>-->
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav bg-info">
-                         <li class="active "><a href="#">Dashboard</a></li>
-            
-                  </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                               <li><a href="${pageContext.request.contextPath}/associate/employee_tasks.htm">My Tasks</a></li> 
-                               <li><a href="${pageContext.request.contextPath}/associate/employee_leaves.htm">Apply Leave</a></li>
-                               <li><a href="${pageContext.request.contextPath}">Logout</a></li>
-                               <!--   <li><a href="${pageContext.request.contextPath}/jobseekerregister.htm">New Employees</a></li>
-                                <li><a href="${pageContext.request.contextPath}/employerLogin.htm">Sign In</a></li> -->
-                                <li class="logindd dropdown">
-       
-             </li>
-                    </ul>
-              </div>
-            </div>
-        </nav> 
-        </div>
-	<div align="center">
-           <c:if test="${addedLeave}">
-                        <p style="color:green">Applied for leave Successfully</p>
-                    </c:if>
-               <c:if test="${updatedLeave}">
-                        <p style="color:green">Updated leave details Successfully</p>
-                </c:if>
-                <c:if test="${applyLeave}">
-                        <p style="color:green">Leave not allocated for the selected year.Please contact HR for more details</p>
-                    </c:if>
-                        <a class="btn btn-primary" href="${contextPath}/associate/apply_leaves.htm">Apply Leave</a><br>
-		<table class="login" border="3">
-			<tr>
-				<th>Employee Name</th>
-				<th>From</th>
-                                <th>To</th>
-                                <th>Reason</th>
-                                <th>Status</th>
-				<th>Update</th>
-			</tr>
-                        <c:forEach items="${leaveList}" var="leave">	
-                            <tr>
-                                        <td>${leave.user.first_name} ${leave.user.last_name}</td>
-                                        <td><fmt:formatDate type = "date" value = "${leave.start_date}" /></td>
-                                        <td><fmt:formatDate type = "date" value = "${leave.end_date}" /></td>
-                                        <td>${leave.reason}</td>
-                                        <td>${leave.status}</td>
-                                         <td><a  href="editLeaves/${leave.id}">Update</a></td>
-                                         <td><a  href="deleteLeave/${leave.id}">Delete</a></td> 
-                                </tr>
-				
-			</c:forEach>
+        <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+        <c:set var="leaveList" value="${leaveList}" />
+        <nav class="navbar navbar-inverse" style="height:70px">
+            <p style="text-align: center;font-size: 40px;color:white;font-weight: bold">Employee Management Portal</p>
+            <ul class="nav navbar-nav" style="float:right">
+                 <li><a href="${pageContext.request.contextPath}/associate/employee_tasks.htm">My Tasks</a></li> 
+                 <li><a href="${pageContext.request.contextPath}/associate/employee_leaves.htm">Apply Leave</a></li>
+                 <li><a href="${pageContext.request.contextPath}">Logout</a></li>
+            </ul>
+        </nav>
+        <div align="center" style="margin-top: 250px">
+            <c:if test="${addedLeave}">
+                <p style="color:green">Applied for leave Successfully</p>
+            </c:if>
+            <c:if test="${updatedLeave}">
+                <p style="color:green">Updated leave details Successfully</p>
+            </c:if>
+            <c:if test="${applyLeave}">
+                <p style="color:green">Leave not allocated for the selected year.Please contact HR for more details</p>
+            </c:if>
+            <a class="reg-button" href="${contextPath}/associate/apply_leaves.htm">Apply Leave</a><br>
+            <table class="table table-striped" id="emp-table">
+                <thead>
+                <th>Employee Name</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Update/Delete</th>
+                </thead>
+                <c:forEach items="${leaveList}" var="leave">	
+                    <tr>
+                        <td>${leave.user.first_name} ${leave.user.last_name}</td>
+                        <td><fmt:formatDate type = "date" value = "${leave.start_date}" /></td>
+                        <td><fmt:formatDate type = "date" value = "${leave.end_date}" /></td>
+                        <td>${leave.reason}</td>
+                        <td>${leave.status}</td>
+                        <c:if test="${leave.status ne'Approve'}">
+                            <td><a  href="editLeaves/${leave.id}">Update</a>
+                                <a  href="deleteLeave/${leave.id}">Delete</a></td> 
+                            </c:if>
+                    </tr>
 
-		</table>
-	</div>
-</body>
+                </c:forEach>
+
+            </table>
+        </div>
+    </body>
 </html>

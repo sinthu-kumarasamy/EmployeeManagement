@@ -13,50 +13,19 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <title>Add Employee</title>
+         <style><%@include file="/resources/css/style.css"%></style>
     </head>
     <body>
-        <div class="container">
-
-
-
-           <nav class="navbar navbar-default ">
-            <div class="container-fluid bg-sucess">
-<!--            <div class="navbar-header ">
-            
-                <a class="navbar-brand" href="${pageContext.request.contextPath}/diverthome.htm">Job Portal</a>
-                </div>-->
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav bg-info">
-                         <li class="active "><a href="#">Dashboard</a></li>
-            
-                  </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                               <li><a href="${pageContext.request.contextPath}/admin/list_employee.htm">View/Add Employee</a></li> 
-                               <li><a href="${pageContext.request.contextPath}/admin/list_leaves.htm">View/Add Leave</a></li
-                               <li><a href="${pageContext.request.contextPath}">Logout</a></li>
-<!--                                  <li><a href="${pageContext.request.contextPath}/employerregister.htm">New Employers</a></li>
-                                <li><a href="${pageContext.request.contextPath}/jobseekerregister.htm">New Employees</a></li>
-                                <li><a href="${pageContext.request.contextPath}/employerLogin.htm">Sign In</a></li> -->
-                                <li class="logindd dropdown">
-       
-             </li>
-                    </ul>
-              </div>
-            </div>
+  
+                                
+     <nav class="navbar navbar-inverse" style="height:70px">
+            <p style="text-align: center;font-size: 40px;color:white;font-weight: bold">Employee Management Portal</p>
+            <ul class="nav navbar-nav" style="float:right">
+                <li><a href="${pageContext.request.contextPath}/admin/list_employee.htm">View/Add Employee</a></li> 
+                <li><a href="${pageContext.request.contextPath}/admin/list_leaves.htm">View/Add Leave</a></li>
+                <li><a href="${pageContext.request.contextPath}">Logout</a></li>
+            </ul>
         </nav>
-	  
-	  
-<!--	   <img class="img-responsive" src="resources/images/office.jpg" alt="office" width="1900" height="300">-->
-
-
-
-<!--    <footer class="footer">
-      <div class="container">
-        <p class="text-muted">For more details follow us @Job Portal.</p>
-      </div>
-    </footer>-->
-
-</div>
+                                  
     </body>
 </html>

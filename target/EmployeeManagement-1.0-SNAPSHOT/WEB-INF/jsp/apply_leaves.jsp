@@ -12,43 +12,40 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style><%@include file="/resources/css/style.css"%></style>
         <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        </script>       
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </script>       
 
-    </head>
-    
- 
-    <body>
-	<div align="center">
-		<h2>Apply Leave</h2>
-		<form:form modelAttribute="leave" method="post">
-			<table class="login">
-                                <tr>
-					<td>Start Date</td>
-					<td><input type="date" name="start_date" 
-							 /> <font color="red"><form:errors
-								path="start_date" /></font></td>
-				</tr>
-                                 <tr>
-					<td>End Date:</td>
-					<td><input name="end_date" type="date"
-							 /> <font color="red"><form:errors
-								path="end_date" /></font></td>
-				</tr>
-                                <tr>
-					<td>Reason:</td>
-					<td><form:input path="reason" size="30" />
-						<font color="red"><form:errors path="reason" /></font></td>
-				</tr>
-                 
-				<tr>
-					<td><input class="btn btn-primary" type="submit"
-						value="Apply" /></td>
-				</tr>
-			</table>
-		</form:form>
-	</div>
+</head>
+
+
+<body>
+    <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
+    <form:form modelAttribute="leave" method="post">
+        <div class="form-content">
+            <p style="text-align: center;font-size: 20px;font-weight: bold">Apply Leave</p>
+            <c:if test="${not empty errorMessage}">
+                    <p style="color:red">${errorMessage}</p>
+             </c:if>
+            <label>Start Date</label>
+            <input type="date" name="start_date" 
+                   /> <font color="red"><form:errors
+                path="start_date" /></font>
+            <label>End Date:</label>
+            <input name="end_date" type="date"
+                   /> <font color="red"><form:errors
+                path="end_date" /></font>
+            <label>Reason:</label>
+            <form:input path="reason" size="30" />
+            <font color="red"><form:errors path="reason" /></font>
+
+            <input class="button" type="submit"/>
+                   <span class="psw"><a class="reg-button" href="${contextPath}/associate/employee_leaves.htm">Back</a></span>
+        </div>		
+    </form:form>
+
 </body>
 </html>
 
