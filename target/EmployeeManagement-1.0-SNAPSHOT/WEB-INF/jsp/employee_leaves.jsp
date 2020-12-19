@@ -20,8 +20,12 @@
     <body>
         <c:set var="contextPath" value="${pageContext.request.contextPath}" />
         <c:set var="leaveList" value="${leaveList}" />
+          <c:if test="${empty credits}">
+                    <c:set var="credits" value="0"/>
+             </c:if>
         <nav class="navbar navbar-inverse" style="height:70px">
             <p style="text-align: center;font-size: 40px;color:white;font-weight: bold">Employee Management Portal</p>
+            <p style="text-align: right;font-size: 20px;font-weight: bold">Hello ${user.first_name}${user.last_name} Your Credits:${credits}</p>
             <ul class="nav navbar-nav" style="float:right">
                  <li><a href="${pageContext.request.contextPath}/associate/employee_tasks.htm">My Tasks</a></li> 
                  <li><a href="${pageContext.request.contextPath}/associate/employee_leaves.htm">Apply Leave</a></li>

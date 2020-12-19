@@ -22,6 +22,9 @@
     <body>
         <c:set var="contextPath" value="${pageContext.request.contextPath}" />
         <c:set var="map" value="${map}" />
+         <c:if test="${empty credits}">
+                    <c:set var="credits" value="0"/>
+             </c:if>
         <nav class="navbar navbar-inverse" style="height:70px">
             <p style="text-align: center;font-size: 40px;color:white;font-weight: bold">Employee Management Portal</p>
             <p style="text-align: right;font-size: 20px;font-weight: bold">Hello ${user.first_name}${user.last_name} Your Credits:${credits}</p>

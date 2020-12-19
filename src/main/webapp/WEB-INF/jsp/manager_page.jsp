@@ -18,6 +18,8 @@
     <body>
         <nav class="navbar navbar-inverse" style="height:70px">
             <p style="text-align: center;font-size: 40px;color:white;font-weight: bold">Employee Management Portal</p>
+            
+            
             <ul class="nav navbar-nav" style="float:right">
                 <li><a href="${pageContext.request.contextPath}/manager/list_tasks.htm">View/Add Tasks</a></li>
                 <li><a href="${pageContext.request.contextPath}/manager/approve_leaves.htm">Leave Approval</a></li>

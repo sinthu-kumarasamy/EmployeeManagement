@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -30,11 +31,9 @@ public class EmployeeLeave implements Serializable {
     private int id;
     
     @Column(name="start_date")
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date start_date;
     
     @Column(name="end_date")
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date end_date;
     
     @Column(name="reason")

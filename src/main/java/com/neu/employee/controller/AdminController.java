@@ -220,11 +220,11 @@ public class AdminController {
     public ModelAndView updateLeaveDetails(@ModelAttribute("leaveInfo")LeaveInfo leave,BindingResult result,HttpServletRequest request,Model model) throws CreateException {
         List<User>employeeList = userDao.getAllEmployees(); 
         if(request.getAttribute("unsafe_input")=="true"){
+              model.addAttribute("errorMessage","Please enter valid input");
                return  new ModelAndView("add_leave","employeeList",employeeList);
             }    
             leaveValidator.validate(leave, result);
             if(result.hasErrors()){
-                model.addAttribute("errorMessage","Please enter valid input");
                 return  new ModelAndView("add_leave","employeeList",employeeList);
             }
             int leave_id = Integer.parseInt(request.getParameter("id"));

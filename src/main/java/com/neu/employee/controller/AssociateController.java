@@ -54,7 +54,7 @@ public class AssociateController {
     
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.setLenient(true);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
     }
@@ -104,18 +104,13 @@ public class AssociateController {
         HttpSession session = (HttpSession) request.getSession();
 	User user = (User) session.getAttribute("user");
         List<LeaveInfo> leaveData = leaveDao.getUserLeaveById(user);
-        Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
-        Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date"));
         boolean flag = false; 
         for(LeaveInfo l  : leaveData){
-            System.out.println(start_date.getYear());
-            if(((start_date.getYear()+1900)== l.getYear() || (end_date.getYear()+1900)==l.getYear()) && l.getNo_of_days()>0){
+            if(((leave.getStart_date().getYear()+1900)== l.getYear() || (leave.getStart_date().getYear()+1900)==l.getYear()) && l.getNo_of_days()>0){
                 flag=true;
             }
         }
         if(flag){
-           leave.setStart_date(start_date);
-            leave.setEnd_date(end_date);
             leaveDao.applyLeave(leave, user);
              List<EmployeeLeave>leavesList = leaveDao.getLeaveByUserId(user);
             return  new ModelAndView("employee_leaves","leaveList",leavesList);  
@@ -136,6 +131,8 @@ public class AssociateController {
         List<Tasks>completedTasks = tasksDao.getAllCompletedTasks(user);
         List<Tasks>overdueTasks = tasksDao.getOverdueTasks(user);
         List<Tasks>pendingTasks = tasksDao.getAllActiveTasks(user);
+        Long credits = tasksDao.getCredits(user);
+        session.setAttribute("credits", credits);
         map.put("pending",pendingTasks);
         map.put("overdue",overdueTasks);
         map.put("completed",completedTasks);
@@ -155,31 +152,26 @@ public class AssociateController {
     }
     
     @RequestMapping(value="/associate/editLeaves.htm", method = RequestMethod.POST)
-     public ModelAndView updateleave(@ModelAttribute("leave")EmployeeLeave leave,HttpServletRequest request,Model model,BindingResult result) throws CreateException, ParseException {
+     public String updateleave(@ModelAttribute("leave")EmployeeLeave leave,HttpServletRequest request,Model model,BindingResult result) throws CreateException, ParseException {
           if(request.getAttribute("unsafe_input")=="true"){
                 model.addAttribute("errorMessage","Please enter valid input");
-                return  new ModelAndView("update_leaves"); 
+                return  "update_leaves"; 
             } 
            empLeaveValidator.validate(leave, result);
             if(result.hasErrors()){
-               return  new ModelAndView("update_leaves"); 
+               return  "update_leaves"; 
             }
-           int leave_id = Integer.parseInt(request.getParameter("id"));
-             EmployeeLeave leaveData = leaveDao.getLeaveById(leave_id);
+             EmployeeLeave leaveData = leaveDao.getLeaveById(leave.getId());
             leaveData.setReason(leave.getReason());
-            System.out.println(leaveData.getStart_date());
             HttpSession session = (HttpSession) request.getSession();
             User user = (User) session.getAttribute("user");
-            Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
-            Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date")); 
-            leaveData.setStart_date(start_date);
-            leaveData.setEnd_date(end_date);
             leaveData.setUser(user);
+            leaveData.setStart_date(leave.getStart_date());
+            leaveData.setEnd_date(leave.getEnd_date());
             leaveData.setStatus("Applied");
             leaveDao.updateLeave(leaveData);
             model.addAttribute("updatedLeave",true);
-            List<EmployeeLeave>leavesList = leaveDao.getLeaveByUserId(user);
-            return  new ModelAndView("employee_leaves","leaveList",leavesList);
+            return  "redirect:/associate/employee_leaves.htm";
     }
     
 }

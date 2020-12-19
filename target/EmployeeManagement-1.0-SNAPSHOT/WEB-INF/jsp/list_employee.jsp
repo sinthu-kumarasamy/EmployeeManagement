@@ -22,6 +22,7 @@
         <c:set var="employeelist" value="${employeeList}" />
          <nav class="navbar navbar-inverse" style="height:70px">
             <p style="text-align: center;font-size: 40px;color:white;font-weight: bold">Employee Management Portal</p>
+            <p style="text-align: right;font-size: 20px;font-weight: bold">Hello ${user.first_name}${user.last_name}</p>
             <ul class="nav navbar-nav" style="float:right">
                 <li><a href="${pageContext.request.contextPath}/admin/list_employee.htm">View/Add Employee</a></li> 
                 <li><a href="${pageContext.request.contextPath}/admin/list_leaves.htm">View/Add Leave</a></li>

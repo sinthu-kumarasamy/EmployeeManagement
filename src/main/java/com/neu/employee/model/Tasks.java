@@ -39,11 +39,9 @@ public class Tasks implements Serializable {
     private int credits;
     
     @Column(name="start_date")
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date start_date;
     
     @Column(name="end_date")
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date end_date;
     
     @Column(name="status")

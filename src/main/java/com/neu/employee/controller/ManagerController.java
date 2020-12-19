@@ -53,7 +53,7 @@ public class ManagerController {
     
    @InitBinder
     public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.setLenient(true);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
     }
@@ -91,11 +91,9 @@ public class ManagerController {
            return  new ModelAndView("add_tasks","employeeList",employeeList); 
         }
         String user_id = request.getParameter("user_id");
-        User user = userDao.getUserById(Integer.parseInt(user_id));
-        Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
-        Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date")); 
-        task.setStart_date(start_date);
-        task.setEnd_date(end_date);
+        User user = userDao.getUserById(Integer.parseInt(user_id)); 
+        task.setStart_date(task.getStart_date());
+        task.setEnd_date(task.getEnd_date());
         task.setUser(user);
         tasksDao.addTask(task);
         HttpSession session = (HttpSession) request.getSession();
@@ -165,15 +163,12 @@ public class ManagerController {
                return  new ModelAndView("update_tasks","employeeList",employeeList); 
             }
              
-            int task_id = Integer.parseInt(request.getParameter("id"));
-            Tasks taskData = tasksDao.getTaskById(task_id); 
+            
+            Tasks taskData = tasksDao.getTaskById(task.getId()); 
             taskData.setCredits(task.getCredits());
-            String user_id = request.getParameter("user_id");
-            User user = userDao.getUserById(Integer.parseInt(user_id));
-            Date start_date = new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("start_date")); 
-            Date end_date=new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("end_date")); 
-            taskData.setStart_date(start_date);
-            taskData.setEnd_date(end_date);
+            User user = userDao.getUserById(task.getUser().getUser_id());
+            taskData.setStart_date(task.getStart_date());
+            taskData.setEnd_date(task.getEnd_date());
             taskData.setTaskDesc(task.getTaskDesc());
             taskData.setStatus(task.getStatus());
             taskData.setUser(user);

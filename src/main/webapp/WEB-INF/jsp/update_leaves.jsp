@@ -25,11 +25,11 @@
                     <p style="color:red">${errorMessage}</p>
              </c:if>
                 <label>Employee Name:</label>
-                <select name="user_id" disabled="disabled">
+                <form:select path="user.user_id" disabled="disabled">
                     <c:forEach var="item" items="${employeeList}">
                         <option value="${item.user_id}"${item.user_id == leaveInfo.user.user_id ? 'selected="selected"' : ''}>${item.first_name}${item.last_name}</option>
                     </c:forEach>
-                </select>
+                </form:select>
                 <label>No. Of Days:</label><form:input path="no_of_days" type="number" size="30"/>
                 <font color="red"><form:errors path="no_of_days" /></font>
                 <label>Select Year:</label><form:select path="year">

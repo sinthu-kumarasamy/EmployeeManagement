@@ -62,10 +62,10 @@
                 <font color="red"><form:errors path="taskDesc" /></font>
                 <label>Credits:</label><form:input type="number" path="credits" size="30" />
                 <font color="red"><form:errors path="credits" /></font>
-                <label>Start Date:</label><input id="start_date" type="date" name="start_date" 
+                <label>Start Date:</label><form:input id="start_date" type="date" path="start_date" 
                                                  value="${task.start_date}" /> <font color="red"><form:errors
                     path="start_date" /></font>
-                <label>End Date:</label><input id="end_date" name="end_date" type="date"
+                <label>End Date:</label><form:input id="end_date" path="end_date" type="date"
                                                value="${task.end_date}"  /> <font color="red"><form:errors
                     path="end_date" /></font>
                 <label>Status :</label><form:select  path="status">
@@ -74,11 +74,11 @@
 
                 </form:select><form:errors
                     path="status" />
-                <label>Assign To:</label><select name="user_id">
+                <label>Assign To:</label><form:select path="user.user_id">
                     <c:forEach var="item" items="${employeeList}">
                         <option value="${item.user_id}"${item.user_id == task.user.user_id ? 'selected="selected"' : ''}>${item.first_name}${item.last_name}</option>
                     </c:forEach>
-                </select><input class="button" type="submit"
+                </form:select><input class="button" type="submit"
                                 value="Update Task" /></td>
             <span class="psw"><a class="reg-button" href="${contextPath}/manager/list_tasks.htm">Back</a></span></div>
         </form:form>

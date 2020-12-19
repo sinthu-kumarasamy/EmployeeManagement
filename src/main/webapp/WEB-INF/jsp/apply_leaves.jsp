@@ -30,11 +30,11 @@
                     <p style="color:red">${errorMessage}</p>
              </c:if>
             <label>Start Date</label>
-            <input type="date" name="start_date" 
+            <form:input type="date" path="start_date" 
                    /> <font color="red"><form:errors
                 path="start_date" /></font>
             <label>End Date:</label>
-            <input name="end_date" type="date"
+            <form:input path="end_date" type="date"
                    /> <font color="red"><form:errors
                 path="end_date" /></font>
             <label>Reason:</label>
